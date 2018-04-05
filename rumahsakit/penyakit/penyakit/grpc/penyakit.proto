@@ -1,0 +1,57 @@
+syntax="proto3";
+
+// ini fungsi bahwa gk ada respon contohnya di service
+import "google/protobuf/empty.proto";
+
+package grpc; 
+
+message AddPenyakitReq{
+    string kodePenyakit=1;
+    string namaPenyakit=2;
+    string deskripsi=3;
+    int32  status=4;
+}
+
+// request adalah yang datang lalu ditampung
+message ReadPenyakitByKodeReq{
+    string kode=1; 
+}
+
+message ReadPenyakitByKeteranganReq{
+    string keterangan=1;
+}
+
+// request adalah sesuatu yang return yang akan dikembalikan biasanya ada request dan respon
+message ReadPenyakitByKodeResp{
+    string kodePenyakit=1;
+    string namaPenyakit=2;
+    string deskripsi=3;
+    int32  status=4;
+    string keterangan=5;
+}
+
+message ReadPenyakitByKeteranganResp{
+    repeated ReadPenyakitByKodeResp allKeterangan=1;
+}
+
+message ReadPenyakitResp{
+    // repeated itu sama kayak menulis ulang
+    repeated ReadPenyakitByKodeResp allkode=1;
+}
+
+message UpdatePenyakitReq{
+    string kodePenyakit=1;
+    string namaPenyakit=2;
+    string deskripsi=3;
+    int32  status=4;
+    string keterangan=5;
+}
+
+// ini menggunakan data yang returnnya itu atau responnya gk ada
+service PenyakitService{
+    rpc AddPenyakit(AddPenyakitReq) returns (google.protobuf.Empty) {};
+    rpc ReadPenyakitByKode(ReadPenyakitByKodeReq) returns (ReadPenyakitByKodeResp) {};
+    rpc ReadPenyakit(google.protobuf.Empty) returns (ReadPenyakitResp){};
+    rpc UpdatePenyakit(UpdatePenyakitReq) returns (google.protobuf.Empty){};
+    rpc ReadPenyakitByKeterangan(ReadPenyakitByKeteranganReq) returns (ReadPenyakitByKeteranganResp) {};
+    }
